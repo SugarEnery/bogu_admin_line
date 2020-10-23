@@ -1,7 +1,7 @@
 # merciqiao-vue
 
 > 这是一个vue+elementui的后台管理系统模版框架
-<!-- 111 -->
+
 ## 运行和打包说明
 
 ``` bash
@@ -38,7 +38,7 @@ npm run build --report
 master分支
 ###  三.后台接口
  - 我已经提供了公网的接口
- - java接口服务git:
+ - java接口服务git: 
  - 分支:single-service-removeredis分支
  - 这个微服务项目提供了此web的接口
 

@@ -40,29 +40,10 @@
                  {{ scope.row.name == null? '暂无' :scope.row.name }}
               </template>
             </el-table-column>
-            <!-- <el-table-column prop="type" label="标签" align="center" min-width="50">
-              <template slot-scope="scope">
-                <div v-for="(item, index) in auctionType_info" :key="index" >
-                  <div v-if="scope.row.id == 1" >陶瓷</div>
-                  <div v-else-if="scope.row.id == 2" >玉器</div>
-
-                </div>
-              </template>
+            <el-table-column prop="type_name" label="类型" align="center" min-width="150">
+            </el-table-column>
+<!--        <el-table-column prop="tag" label="标签" align="center" min-width="150">
             </el-table-column> -->
-            <el-table-column prop="type" label="类型" align="center" min-width="50" >
-              <!-- 遍历类型 -->
-              <template slot-scope="scope">
-                <div v-for="(item, index) in auctionType_info" :key="index" >
-<!-- {{index}} -->
-<!-- {{scope.row.name}} -->
-                  <div v-if="scope.row.id == 1" >陶瓷</div>
-                  <div v-else-if="scope.row.id == 2" >玉器</div>
-
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="tag" label="标签" align="center" min-width="150">
-            </el-table-column>
             <el-table-column prop="content" label="介绍" align="center" min-width="150">
             </el-table-column>
             <el-table-column prop="price" label="价格" align="center" min-width="200">

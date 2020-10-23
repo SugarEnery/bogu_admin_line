@@ -160,14 +160,14 @@ export default {
     },
     // 拍卖分类列表下拉菜单
     auctionTypeListApi() {//初始化下拉框动态数据
-        apis.msgApi.auctionTypeList()
+        apis.msgApi.expertsTypeList()
         .then((data)=>{
           console.log(data)
             if(data&&data.data){
                 var json=data.data;
                 if(json&& json.code == 1 ){
                   console.log(json)
-                  var auctionType_info = data.data.data
+                  // var auctionType_info = data.data.data
                   this.auctionType_info = data.data.data;
                 }
             }

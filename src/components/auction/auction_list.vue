@@ -21,7 +21,6 @@
         <!-- 查询区----end -->
         <!-- 操作区----start -->
         <el-row class="mgb15">
-            <!-- <el-button size="small" round type="primary" @click="handleAdd">新增</el-button> -->
             <el-button size="small" round type="danger" @click="deleteMany">批量删除</el-button>
             <el-button size="small" round type="danger" @click="onlineMany">批量上线</el-button>
             <el-button size="small" round type="danger" @click="offlineMany">批量下线</el-button>
@@ -68,6 +67,9 @@
                </template>
             </el-table-column>
             <el-table-column prop="images" label="详情" align="center"  min-width="100" >
+              <template slot-scope="scope">
+                <p v-html='scope.row.images'></p>
+              </template>
             </el-table-column>
 
             <el-table-column prop="start_time" label="开始时间" align="center" min-width="200">

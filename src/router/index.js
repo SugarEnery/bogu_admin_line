@@ -71,9 +71,11 @@ axios.defaults.timeout = 5000;//毫秒
 axios.interceptors.response.use(function (response) {
   // Do something with response data
   // console.log('<<<请求成功');
-  // console.log(response);
-  if(response.code == '-1'){
-    localStorage.setItem('token',null)
+  console.log(response);
+  if(response.data.code == '-1'){
+    console.log('<<<请求失败');
+    localStorage.setItem('token','空')
+    return response;
   }else{
     console.log('<<<请求成功');
     return response;
@@ -95,7 +97,7 @@ router.beforeEach((to, from, next) => {
     var token = localStorage.getItem('token');
     console.log(token)
     //如果没登录,都导向登录页
-    if ((token == 'null' || token == '')) {
+    if (token == 'null'|| token == ''|| token == '空') {
       if (to.path !== '/login') {
         next({ path: '/login' })
       }
@@ -108,7 +110,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-});
+})
 //全局路由守卫
 // router.beforeEach((to, from, next) => {
 //   //debugger
