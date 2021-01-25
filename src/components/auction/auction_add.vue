@@ -16,6 +16,10 @@
                   <el-input v-model="form2.starting_price" placeholder="起拍价" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
 ></el-input>
               </el-form-item>
+              <el-form-item label="保证金" prop="bond_price">
+                  <el-input v-model="form2.bond_price" placeholder="保证金" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
+              ></el-input>
+              </el-form-item>
               <el-form-item label="加价幅度" prop="markup_range">
                   <el-input v-model="form2.markup_range" placeholder="加价幅度" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"></el-input>
               </el-form-item>
@@ -124,6 +128,7 @@ export default {
         auction_type: "",
         status: "",
         starting_price:"",
+        bond_price:"",
         start_time:'',
         end_time:"",
         markup_range: "",
@@ -203,8 +208,8 @@ export default {
 
     },
     handleRemove(file, fileList) {//移除图片
-            console.log(file, fileList);
-          },
+      console.log(file, fileList);
+    },
     handlePictureCardPreview(file) {//预览图片时调用
       console.log(file);
       this.dialogImageUrl = file.url;
@@ -251,14 +256,16 @@ export default {
               console.log(data);
                 if(data&&data.data){
                     var json=data.data;
-                     if(json&&json.code == 1){
+                    if(json&&json.code == 1){
                         this.$message({message: '执行成功',type: "success"});
                         this.$router.push({ path: '/auction_list' })
                         this.dialogEdittVisible = false;
                         return;
+                    }else{
+                      this.$message({message: json.msg,type: "error"});
                     }
                 }
-               this.$message({message: '执行失败，请重试',type: "error"});
+               // this.$message({message: '执行失败，请重试',type: "error"});
             })
             .catch((err)=>{
                 this.$message({message: '执行失败，请重试',type: "error"});

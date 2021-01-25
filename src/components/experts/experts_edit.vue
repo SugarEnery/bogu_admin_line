@@ -7,7 +7,10 @@
                   <el-input v-model="form2.name" placeholder="名称"></el-input>
               </el-form-item>
               <el-form-item label="专家介绍" prop="content">
-                  <el-input v-model="form2.content" placeholder="专家介绍" ></el-input>
+                  <el-input v-model="form2.content" placeholder="专家介绍" v-html="form2.content"></el-input>
+              </el-form-item>
+              <el-form-item label="标签" prop="tag">
+                  <el-input v-model="form2.tag" placeholder="标签"></el-input>
               </el-form-item>
               <el-form-item label="分类" prop="type">
                 <el-select v-model="auctionType_info.name"  placeholder="请选择分类"   @change="selectGet(auctionType_info.name)"  >
@@ -97,6 +100,7 @@ export default {
         name: "",
         image: "",
         price:"",
+        tag:"",
         content:"",
         type:'',
         // 上传图片
@@ -154,9 +158,11 @@ export default {
         this.form2.id = this.personInfo.id;
         this.form2.name = this.personInfo.name;
         this.form2.price = this.personInfo.price;
+        this.form2.tag = this.personInfo.tag;
         this.form2.content = this.personInfo.content;
         this.form2.image = this.personInfo.image;
         this.form2.type = this.personInfo.type;
+
     },
     // 拍卖分类列表下拉菜单
     auctionTypeListApi() {//初始化下拉框动态数据
@@ -195,8 +201,8 @@ export default {
         });
     },
     handleRemove(file, fileList) {//移除图片
-            console.log(file, fileList);
-          },
+      console.log(file, fileList);
+    },
     handlePictureCardPreview(file) {//预览图片时调用
       console.log(file);
       this.dialogImageUrl = file.url;

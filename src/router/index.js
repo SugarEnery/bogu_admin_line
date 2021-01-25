@@ -48,14 +48,16 @@ const router = new VueRouter({
  */
 axios.interceptors.request.use(
   config => {
-    console.log('>>>请求url:', config.url);
+    // console.log('>>>请求url:', config.url);
     var headers = config.headers;
-    if (localStorage.getItem("token")) {
-        headers.userToken = localStorage.getItem("token")
-        headers.uid = localStorage.getItem("uid")
-    }
-    else{
-      console.log("失效！")
+    // console.log('headers',headers)
+    // console.log(sessionStorage.getItem("token"))
+    if (sessionStorage.getItem("token")) {
+        headers.userToken = sessionStorage.getItem("token")
+        headers.uid = sessionStorage.getItem("uid")
+    }else{
+      console.log("失效！");
+
     }
     return config;
   },
@@ -71,10 +73,9 @@ axios.defaults.timeout = 5000;//毫秒
 axios.interceptors.response.use(function (response) {
   // Do something with response data
   // console.log('<<<请求成功');
-  console.log(response);
+  // console.log(response);
   if(response.data.code == '-1'){
     console.log('<<<请求失败');
-    localStorage.setItem('token','空')
     return response;
   }else{
     console.log('<<<请求成功');
@@ -88,16 +89,15 @@ axios.interceptors.response.use(function (response) {
 });
 
 router.beforeEach((to, from, next) => {
-  //debugger
   console.log('跳转到:', to.fullPath);
   if (to.path == '/login') {
     next();
   }
   else {
-    var token = localStorage.getItem('token');
-    console.log(token)
+    var uid = sessionStorage.getItem('uid');
+    // console.log(uid,'uid')
     //如果没登录,都导向登录页
-    if (token == 'null'|| token == ''|| token == '空') {
+    if (uid === null || uid === '') {
       if (to.path !== '/login') {
         next({ path: '/login' })
       }

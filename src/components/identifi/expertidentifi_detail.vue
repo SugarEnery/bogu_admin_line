@@ -5,27 +5,30 @@
         <!-- 查询区----start -->
         <div class="container form02">
             <el-form :label-position="labelPosition" :rules="rules" ref="form02" :label-width="labelWidth" :inline="false" :model="form2" class="demo-form-inline">
+              <el-form-item label="鉴定需求" prop="appraisal_need">
+                   <div >
+                     {{form2.appraisal_need}}
+                   </div>
+               </el-form-item>
+              <el-form-item label="鉴定图" prop="images" width="120">
+                  <div v-for="items in form2.images">
+                    <img :src="items"  width="100" />
+                  </div>
+               </el-form-item>
               <el-form-item label="藏品名称" prop="collection_name">
                   <el-input v-model="form2.collection_name" placeholder="藏品名称"></el-input>
               </el-form-item>
               <el-form-item label="藏品年代" prop="collection_year">
                   <el-input v-model="form2.collection_year" placeholder="鉴定藏品年代" ></el-input>
               </el-form-item>
-              <!-- <el-form-item label="断代" prop="dating">
-                  <el-input v-model="form2.dating" placeholder="断代" ></el-input>
-              </el-form-item> -->
-              <!-- <el-form-item label="图片" prop="image" width="120">
-                <img width="50%" :src="form2.image" alt="">
-              </el-form-item> -->
-
-                <div class="box-container">
-                    <Ueditor @ready="editorReady"
-                      ref="ue"
-                      :value="defaultMSG"
-                      :ueditorConfig="config"
-                      style="width:100%;">
-                    </Ueditor>
-                </div>
+              <div class="box-container">
+                  <Ueditor @ready="editorReady"
+                    ref="ue"
+                    :value="defaultMSG"
+                    :ueditorConfig="config"
+                    style="width:100%;">
+                  </Ueditor>
+              </div>
               <el-form-item label=" ">
                     <el-button type="primary" @click="submitForm('form2')">立即创建</el-button>
                 </el-form-item>
@@ -132,6 +135,9 @@ export default {
         this.form2.dating = this.personInfo.dating;
         this.form2.collection_year = this.personInfo.collection_year;
         this.form2.order_status = this.personInfo.order_status;
+        this.form2.appraisal_need = this.personInfo.appraisal_need;
+        this.form2.images = this.personInfo.images;
+
         if(this.personInfo.expert_opinion !=null){
           this.form.content = this.personInfo.expert_opinion;
           this.form2.expert_opinion = this.personInfo.expert_opinion;
@@ -160,9 +166,10 @@ export default {
                         this.$router.push({ path: '/expertsidentifi_list' })
                         this.dialogEdittVisible = false;
                         return;
+                    }else{
+                      this.$message({message: json.msg,type: "error"});
                     }
                 }
-               this.$message({message: '执行失败，请重试',type: "error"});
             })
             .catch((err)=>{
                 this.$message({message: '执行失败，请重试',type: "error"});

@@ -61,12 +61,14 @@
             </el-table-column>
             <el-table-column prop="expert_opinion" label="鉴定结果" align="center" min-width="150">
               <template slot-scope="scope">
-                 {{ scope.row.expert_opinion == null? '暂无' :scope.row.expert_opinion }}
+                <div v-html="scope.row.expert_opinion">
+                  {{ scope.row.expert_opinion == null ? '暂无' :scope.row.expert_opinion }}
+                </div>
               </template>
             </el-table-column>
-            <el-table-column prop="name" label="内容" align="center" min-width="150">
+            <el-table-column prop="appraisal_need" label="内容" align="center" min-width="150">
               <template slot-scope="scope">
-                 {{ scope.row.name == null? '暂无' :scope.row.name }}
+                 {{ scope.row.appraisal_need == null? '暂无' :scope.row.appraisal_need }}
               </template>
             </el-table-column>
             <el-table-column prop="image" label="图片" align="center"  min-width="100" height="50">
@@ -471,9 +473,8 @@ export default {
                       if( data.data.code == 1){
                         this.$message({message: '执行成功',type: "success"});
                         this.onSearch();
-                      }else if( data.data.code == -1){
-                        this.$message({message: data.data.msg,type: "error"});
-                        this.onSearch();
+                      }else{
+                        this.$message({message: json.msg,type: "error"});
                       }
                     })
                     .catch((err)=>{

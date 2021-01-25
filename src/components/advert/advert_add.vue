@@ -268,9 +268,11 @@ export default {
                         this.$router.push({ path: '/advert_list' })
                         this.dialogEdittVisible = false;
                         return;
+                    }else{
+                      this.$message({message: json.msg,type: "error"});
                     }
                 }
-               this.$message({message: '执行失败，请重试',type: "error"});
+              // this.$message({message: '执行失败，请重试',type: "error"});
             })
             .catch((err)=>{
                 this.$message({message: '执行失败，请重试',type: "error"});

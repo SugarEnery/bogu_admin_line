@@ -23,7 +23,7 @@
                  </el-select>
               </el-form-item>
               <el-form-item label="来源" prop="source">
-                <el-select v-model="source_info.name"  placeholder="请选择来源"   @change="sourceGet(source_info.name)"  >
+                <el-select v-model="source_info.name"  placeholder="请选择来源" @click.native="sourceListApi()" @change="sourceGet(source_info.name)"  >
                     <el-option
                     v-for="item in source_info"
                     :key="item.id"
@@ -33,7 +33,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="分类" prop="type">
-                <el-select v-model="auctionType_info.name"  placeholder="请选择分类"   @change="selectGet(auctionType_info.name)"  >
+                <el-select v-model="auctionType_info.name"  placeholder="请选择分类" @click.native="auctionTypeListApi()"  @change="selectGet(auctionType_info.name)"  >
                     <el-option
                     v-for="item in auctionType_info"
                     :key="item.id"
@@ -49,6 +49,7 @@
                   <el-date-picker
                     v-model="form2.dismount_time"
                     type="datetime"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     placeholder="选择日期时间">
                   </el-date-picker>
               </el-form-item>
@@ -122,6 +123,9 @@
 .el-textarea__inner{
   height:150px;
 }
+.box-container img{
+  width: 100%;
+}
 </style>
 <script>
 import apis from '../../apis/apis';
@@ -181,8 +185,8 @@ export default {
   },
   mounted() {
     this.getParams();
-    this.auctionTypeListApi();
-    this.sourceListApi();
+    // this.auctionTypeListApi();
+    // this.sourceListApi();
 
   },
   components: {
@@ -193,7 +197,7 @@ export default {
         // 取到路由带过来的参数
         const routerParams = this.personInfo
         // this.mallCode = routerParams;
-        // console.log(routerParams);
+        console.log(routerParams);
         // 将数据放在当前组件的数据内
         this.form2.id = this.personInfo.id;
         this.form2.name = this.personInfo.name;
@@ -207,16 +211,19 @@ export default {
         this.form2.images_detail = this.personInfo.images_detail;
         this.form.content = this.personInfo.images_detail;
         this.form2.dismount_time = this.personInfo.dismount_time;
+        this.source_info.name = this.personInfo.source;
+        this.auctionType_info.name = this.personInfo.type;
+
     },
     // 列表下拉菜单
     sourceListApi() {//初始化下拉框动态数据
         apis.msgApi.inforSourceList()
         .then((data)=>{
-          console.log(data)
+          // console.log(data)
             if(data&&data.data){
                 var json=data.data;
                 if(json&& json.code == 1 ){
-                  console.log(json)
+                  // console.log(json)
                   // var source_info = data.data.data
                   this.source_info = data.data.data;
                 }
@@ -229,7 +236,7 @@ export default {
         });
     },
     sourceGet(val){
-      console.log(val)
+      // console.log(val)
       this.source_info.map((s, index) => {
         if (s.name === val) {
           this.id = this.source_info[index].id;
@@ -243,11 +250,11 @@ export default {
     auctionTypeListApi() {//初始化下拉框动态数据
         apis.msgApi.auctionTypeList()
         .then((data)=>{
-          console.log(data)
+          // console.log(data)
             if(data&&data.data){
                 var json=data.data;
                 if(json&& json.code == 1 ){
-                  console.log(json)
+                  // console.log(json)
                   // var auctionType_info = data.data.data
                   this.auctionType_info = data.data.data;
                 }
@@ -260,7 +267,7 @@ export default {
         });
     },
     selectGet(val){
-      console.log(val)
+      // console.log(val)
       this.auctionType_info.map((s, index) => {
         if (s.name === val) {
           this.id = this.auctionType_info[index].id;
@@ -324,12 +331,14 @@ export default {
                         this.$router.push({ path: '/infor_list' })
                         this.dialogEdittVisible = false;
                         return;
+                    }else{
+                      this.$message({message: json.msg,type: "error"});
                     }
                 }
-               this.$message({message: '执行失败，请重试',type: "error"});
+               // this.$message({message: '执行失败，请重试',type: "error"});
             })
             .catch((err)=>{
-                this.$message({message: '执行失败，请重试',type: "error"});
+                this.$message({message: data.msg ,type: "error"});
                 console.log(err)
             });
         }else {

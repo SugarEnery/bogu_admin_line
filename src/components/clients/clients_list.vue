@@ -248,7 +248,7 @@ export default {
                 this.listLoading=false;
                 if (data && data.data) {
                   var json = data.data.data;
-                  if ( data.status == 200) {
+                  if (data.status == 200) {
                     this.pageInfo.pageTotal=json.count;
                     _this.tableData = json.data;
                   }
@@ -480,7 +480,7 @@ export default {
                     .then((data)=>{
                         if(data&&data.data){
                             var json=data.data;
-                             if(json&&data.status==200){
+                             if(json&&data.status == 200){
                                 this.$message({message: '执行成功',type: "success"});
                                 this.dialogEdittVisible = false;
                                 this.onSearch();

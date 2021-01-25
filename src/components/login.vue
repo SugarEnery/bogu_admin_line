@@ -101,12 +101,12 @@ export default {
                 this.login();
             }
         };
-        this.getCookie();
-        var loginLog = {
-            ip: returnCitySN["cip"],
-            city: returnCitySN["cname"] + '-' + '进入首页'
-        };
-        apis.shiroApi.loginLog(loginLog);
+        // this.getCookie();
+        // var loginLog = {
+        //     ip: returnCitySN["cip"],
+        //     city: returnCitySN["cname"] + '-' + '进入首页'
+        // };
+        // apis.shiroApi.loginLog(loginLog);
     },
     methods: {
         login() {
@@ -115,94 +115,51 @@ export default {
                   md5.update(this.formLogin.password)
                   let password = md5.digest('hex');
                   this.formLogin.password = password;
-                  // console.log(this.formLogin.password)
             apis.shiroApi.loginIn(this.formLogin)
                 .then((data) => {
                     console.log('success:', data);
-                    var access_token = data.access_token;
+                    // var access_token = data.access_token;
                     if (data && data.data) {
                         var json = data.data;
                         console.log(json)
                         if (json.code == 1) {
                             console.log("登录成功！");
-                            // var token = 'Bearer ' + json.data.token;
+
                             var token = json.data[0].token;
                             var uid = json.data[0].uid;
                             var name = json.data[0].name;
-                            // localStorage.setItem('Authorization',token);
                             localStorage.setItem('token',token);
-                            localStorage.setItem('uid',uid);
+                            // localStorage.setItem('uid',uid);
                             localStorage.setItem('name',name);
 
-                            // if (this.checked == true) {
-                            //     console.log("checked == true");
-                            //     //传入账号名，密码，和保存天数3个参数
-                            //     this.setCookie(this.formLogin.loginName, this.formLogin.password, 7);
-                            // }else {
-                            //   console.log("清空Cookie");
-                            //   //清空Cookie
-                            //   this.clearCookie();
-                            // }
-                            // this.$common.setSessionStorage('username',this.formLogin.loginName);
+                            window.sessionStorage.setItem('uid',uid);
+                            window.sessionStorage.setItem('token',token);
                             this.$common.setSessionStorage('username',json.data[0].name);
-                            // this.$common.setSessionStorage('lev',json.data.sysRoleVoList);
-                            // 存入菜单,渲染菜单
-                            // this.$store.dispatch("add_Menus",json.data.sysMenuVoList);
-                             //动态设置路由
-                            // this.$store.dispatch("add_Routes", json.data.sysMenuVoList);
-
-                            //存储按钮权限
-                            this.$store.dispatch("add_Permissions", json.data.rolePermissionVoList);
                             this.$router.replace({ path: "/index" });
-                            var loginLog={
-                                ip:returnCitySN["cip"],
-                                city:returnCitySN["cname"]+'-'+json.data[0].name +'-登陆'
-                            };
-
-                            apis.shiroApi.loginLog(loginLog);
-                            return;
+                            //存储按钮权限
+                            // this.$store.dispatch("add_Permissions", json.data.rolePermissionVoList);
+                            // this.$router.replace({ path: "/index" });
+                            // var loginLog={
+                            //     ip:returnCitySN["cip"],
+                            //     city:returnCitySN["cname"]+'-'+json.data[0].name +'-登陆'
+                            // };
+                            // apis.shiroApi.loginLog(loginLog);
+                            // return;
                         }
                         else if (json.message) {
                             this.errorInfo.text = json.message;
                         }
                     }
-                    this.errorInfo.isShowError = true;
-                    this.$store.dispatch("loginLog",loginLog);
+                    // this.errorInfo.isShowError = true;
+                    // this.$store.dispatch("loginLog",loginLog);
                 })
                 .catch((err) => {
                     console.log(err);
-                    console.log('error:', err);
+                    // console.log('error:', err);
                     // this.errorInfo.isShowError = true;
                     // this.errorInfo.text = '系统接口异常';
                 });
 
-        },
-        //设置cookie
-        setCookie(c_name, c_pwd, exdays) {
-            var exdate = new Date(); //获取时间
-            exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
-            //字符串拼接cookie
-            window.document.cookie = "userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
-            window.document.cookie = "userPwd" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
-        },
-        //读取cookie
-        getCookie: function() {
-            if (document.cookie.length > 0) {
-                var arr = document.cookie.split('; '); //这里显示的格式需要切割一下自己可输出看下
-                for (var i = 0; i < arr.length; i++) {
-                    var arr2 = arr[i].split('='); //再次切割
-                    //判断查找相对应的值
-                    if (arr2[0] == 'userName') {
-                        this.formLogin.loginName = arr2[1]; //保存到保存数据的地方
-                    } else if (arr2[0] == 'userPwd') {
-                        this.formLogin.password = arr2[1];
-                    }
-                }
-            }
-        },
-        //清除cookie
-        clearCookie: function() {
-            this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
         },
         rollBackTables() {
             var text = '数据还原';
@@ -220,25 +177,25 @@ export default {
                     this.$alert(alertText, '提示', {
                         confirmButtonText: '确定',
                     });
-                    log(text);
+                    // log(text);
                 })
                 .catch(e => {
                     this.$alert('数据还原异常,请重试', '提示', {
                         confirmButtonText: '确定',
                     });
                     text += '失败';
-                    log(text);
+                    // log(text);
                 });
-            console.log(text);
+            // console.log(text);
 
-            function log(text){
-                 var loginLog = {
-                ip: returnCitySN["cip"],
-                city: returnCitySN["cname"] + '-' + text
-            };
+            // function log(text){
+            //   var loginLog = {
+            //     ip: returnCitySN["cip"],
+            //     city: returnCitySN["cname"] + '-' + text
+            //   };
 
-            apis.shiroApi.loginLog(loginLog);
-            }
+            // apis.shiroApi.loginLog(loginLog);
+            // }
 
         }
     }

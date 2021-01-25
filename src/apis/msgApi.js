@@ -76,13 +76,14 @@ export default {
       return Axios.post('http://api.chinabogu.com/homeApi/auctionOnLine',param);
     },
     // 添加拍卖
-    auctionAdd({name,image,status,auction_type,starting_price,markup_range,images,start_time,end_time,}){
+    auctionAdd({name,image,status,auction_type,starting_price,bond_price,markup_range,images,start_time,end_time,}){
       var param ={
         name,
         image,
         status,
         auction_type,
         starting_price,
+        bond_price,
         markup_range,
         images,
         start_time,
@@ -91,7 +92,7 @@ export default {
       return Axios.post('http://api.chinabogu.com/homeApi/auctionCreate',param);
     },
     // 拍卖修改
-    auctionEdit({id,name,image,status,auction_type,starting_price,markup_range,images,start_time,end_time}){
+    auctionEdit({id,name,image,status,auction_type,starting_price,bond_price,markup_range,images,start_time,end_time}){
       var param ={
         id,
         name,
@@ -314,9 +315,10 @@ export default {
       return Axios.get('http://api.chinabogu.com/homeApi/getExpertList?'+params);
     },
     // 专家添加
-    expertsAdd({name,image,price,content,type}){
+    expertsAdd({name,tag,image,price,content,type}){
       var param ={
         name,
+        tag,
         image,
         price,
         content,
@@ -325,7 +327,7 @@ export default {
       return Axios.post('http://api.chinabogu.com/homeApi/expertCreate',param);
     },
     // 专家修改
-    expertsEdit({name,image,price,content,id,type}){
+    expertsEdit({name,image,price,tag,content,id,type}){
       var param ={
         name,
         image,

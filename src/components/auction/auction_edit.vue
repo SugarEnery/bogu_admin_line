@@ -20,6 +20,10 @@
                   <el-input v-model="form2.starting_price" placeholder="起拍价" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
 ></el-input>
               </el-form-item>
+              <el-form-item label="保证金" prop="bond_price">
+                  <el-input v-model="form2.bond_price" placeholder="保证金" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
+              ></el-input>
+              </el-form-item>
               <el-form-item label="加价幅度" prop="markup_range">
                   <el-input v-model="form2.markup_range" placeholder="加价幅度" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"></el-input>
               </el-form-item>
@@ -128,6 +132,7 @@ export default {
         auction_type: "",
         status: "",
         starting_price:"",
+        bond_price:"",
         start_time:'',
         end_time:"",
         markup_range: "",
@@ -162,7 +167,8 @@ export default {
   computed: {
       headers() {
           return {
-              'Authorization': localStorage.getItem('Authorization'),
+              'userToken': localStorage.getItem("token"),
+              'uid' : localStorage.getItem("uid"),
               'Access-Control-Allow-Headers':'x-requested-with:content-type'
           }
       }
@@ -187,6 +193,8 @@ export default {
         this.form2.status = this.personInfo.status;
         this.form2.auction_type = this.personInfo.auction_type;
         this.form2.starting_price = this.personInfo.starting_price;
+        this.form2.bond_price = this.personInfo.bond_price;
+
         this.form2.markup_range = this.personInfo.markup_range;
         this.form.content = this.personInfo.images;
         this.form2.images = this.personInfo.images;
@@ -210,7 +218,7 @@ export default {
                 var json=data.data;
                 if(json&& json.code == 1 ){
                   console.log(json)
-                  var auctionType_info = data.data.data
+                  // var auctionType_info = data.data.data
                   this.auctionType_info = data.data.data;
                 }
             }
@@ -233,8 +241,8 @@ export default {
 
     },
     handleRemove(file, fileList) {//移除图片
-            console.log(file, fileList);
-          },
+      console.log(file, fileList);
+    },
     handlePictureCardPreview(file) {//预览图片时调用
       console.log(file);
       this.dialogImageUrl = file.url;

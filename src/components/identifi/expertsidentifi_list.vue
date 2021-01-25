@@ -69,20 +69,17 @@
                  {{ scope.row.expert_opinion == null? '暂无' :scope.row.expert_opinion }}
               </template>
             </el-table-column>
-            <el-table-column prop="name" label="内容" align="center" min-width="150">
+            <el-table-column prop="appraisal_need" label="内容" align="center" min-width="150">
               <template slot-scope="scope">
-                 {{ scope.row.name == null? '暂无' :scope.row.name }}
+                 {{ scope.row.appraisal_need == null? '暂无' :scope.row.appraisal_need }}
               </template>
-            </el-table-column>
-            <el-table-column prop="image" label="图片" align="center"  min-width="100" height="50">
-               <!-- 图片的显示 -->
-               <template slot-scope="scope">
-                  <img :src="scope.row.image"  min-width="100" />
-               </template>
             </el-table-column>
             <el-table-column prop="images" label="详情" align="center" min-width="150">
               <template slot-scope="scope">
-                 {{ scope.row.images == null? '暂无' :scope.row.images }}
+                <div v-for="items in scope.row.images">
+                  <img :src="items"  min-width="100" />
+                </div>
+                 <!-- {{ scope.row.images == null? '暂无' :scope.row.images }} -->
               </template>
             </el-table-column>
             <el-table-column prop="created_time" label="开始时间" align="center" min-width="200">

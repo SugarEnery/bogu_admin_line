@@ -6,6 +6,9 @@
               <el-form-item label="名称" prop="name">
                   <el-input v-model="form2.name" placeholder="名称"></el-input>
               </el-form-item>
+              <el-form-item label="标签" prop="tag">
+                  <el-input v-model="form2.tag" placeholder="标签"></el-input>
+              </el-form-item>
               <el-form-item label="分类" prop="type">
                 <el-select v-model="auctionType_info.name"  placeholder="请选择分类"   @change="selectGet(auctionType_info.name)"  >
                     <el-option
@@ -97,6 +100,7 @@ export default {
       form2: {
         //表单对象
         name: "",
+        tag:'',
         image:"",
         price:'',
         link:'',
@@ -257,11 +261,13 @@ export default {
               console.log(data);
                 if(data&&data.data){
                     var json=data.data;
-                     if(json&&json.code == 1){
+                    if(json&&json.code == 1){
                         this.$message({message: '执行成功',type: "success"});
                         this.$router.push({ path: '/experts_list' })
                         this.dialogEdittVisible = false;
                         return;
+                    }else{
+                      this.$message({message: json.msg,type: "error"});
                     }
                 }
                this.$message({message: '执行失败，请重试',type: "error"});

@@ -5,12 +5,15 @@
         <!-- 查询区----start -->
         <div class="container form02">
             <el-form :label-position="labelPosition" :rules="rules" ref="form02" :label-width="labelWidth" :inline="false" :model="form2" class="demo-form-inline">
+              <el-form-item label="鉴定需求" prop="appraisal_need">
+                  <div >
+                    {{form2.appraisal_need}}
+                  </div>
+              </el-form-item>
               <el-form-item label="断代" prop="dating">
                   <el-input v-model="form2.dating" placeholder="断代" ></el-input>
               </el-form-item>
-              <!-- <el-form-item label="图片" prop="image" width="120">
-                <img width="50%" :src="form2.image" alt="">
-              </el-form-item> -->
+
 
                 <div class="box-container">
                     <Ueditor @ready="editorReady"
@@ -126,6 +129,8 @@ export default {
         this.form2.dating = this.personInfo.dating;
         this.form2.order_price = this.personInfo.order_price;
         this.form2.order_status = this.personInfo.order_status;
+        this.form2.appraisal_need = this.personInfo.appraisal_need;
+
         if(this.personInfo.expert_opinion !=null){
           this.form.content = this.personInfo.expert_opinion;
           this.form2.expert_opinion = this.personInfo.expert_opinion;
@@ -154,9 +159,11 @@ export default {
                         this.$router.push({ path: '/platformidentifi_list' })
                         this.dialogEdittVisible = false;
                         return;
+                    }else{
+                      this.$message({message: json.msg,type: "error"});
                     }
                 }
-               this.$message({message: '执行失败，请重试',type: "error"});
+               // this.$message({message: '执行失败，请重试',type: "error"});
             })
             .catch((err)=>{
                 this.$message({message: '执行失败，请重试',type: "error"});

@@ -165,6 +165,14 @@ var routeDevList = [
         title: '专家修改'
       }
     },
+	{
+	  name: 'ckeditor',
+	  path: '/baidu',
+	  component: resolve => require(['@/components/ckeditor/baidu.vue'], resolve),
+	  meta: {
+	    title: '编辑器'
+	  }
+	},
 ];
 //静态菜单
 var menuDevList = [

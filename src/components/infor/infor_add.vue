@@ -50,6 +50,7 @@
               <el-form-item label="到期时间" prop="dismount_time">
                   <el-date-picker
                     v-model="form2.dismount_time"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     type="datetime"
                     placeholder="选择日期时间">
                   </el-date-picker>
@@ -85,7 +86,16 @@
                     style="width:100%;">
                   </Ueditor>
               </div>
-
+              <!-- <div class="edit_container">
+                  <quill-editor
+                      v-model="form2.images_detail"
+                      ref="myQuillEditor"
+                      :options="form2.editorOption"
+                      :on-success="handleSuccess"
+                      @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+                      @change="onEditorChange($event)">
+                  </quill-editor>
+              </div> -->
 
               <el-form-item label=" ">
                   <el-button type="primary" @click="submitForm('form2')">立即创建</el-button>
@@ -124,6 +134,10 @@
 }
 </style>
 <script>
+import { quillEditor } from "vue-quill-editor"; //调用编辑器
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 import apis from '../../apis/apis';
 import Ueditor from '../../components/ckeditor/baidu.vue';
 export default {
@@ -140,6 +154,9 @@ export default {
         type:'',
         recommend_num:'',
         link:'',
+        images_detail: '',
+        editorOption: {},
+        str: '',
         images_detail:"",
         dismount_time: "",
         doUpload:'http://api.chinabogu.com/homeApi/upload',
@@ -176,16 +193,51 @@ export default {
               'uid' : localStorage.getItem("uid"),
               'Access-Control-Allow-Headers':'x-requested-with:content-type'
           }
-      }
+      },
+      // editor() {
+      //     return this.$refs.myQuillEditor.quill;
+      // }
   },
   mounted() {
     this.auctionTypeListApi();
     this.sourceListApi();
+    this.form2.str = this.escapeStringHTML(this.form2.images_detail);
   },
   components: {
-    Ueditor
+    Ueditor,
+    quillEditor
   },
   methods: {
+    onEditorReady(editor) { // 准备编辑器
+    },
+    onEditorBlur(){}, // 失去焦点事件
+    onEditorFocus(){}, // 获得焦点事件
+    onEditorChange(quill){
+      console.log('==========>',quill)
+
+    }, // 内容改变事件
+    handleSuccess (res, file) {
+        // 获取富文本组件实例
+        let quill = this.$refs.QuillEditor.quill;
+        console.log(res)
+        // 如果上传成功
+        if (res) {
+            // 获取光标所在位置
+            let length = quill.getSelection().index;
+            // 插入图片，res为服务器返回的图片链接地址
+            quill.insertEmbed(length, 'image', res.result.data)
+            // 调整光标到最后
+            quill.setSelection(length + 1)
+        } else {
+            // 提示信息，需引入Message
+            Message.error('图片插入失败')
+        }
+    },
+    escapeStringHTML(str) {
+        str = str.replace(/&lt;/g,'<');
+        str = str.replace(/&gt;/g,'>');
+        return str;
+    },
     // 列表下拉菜单
     sourceListApi() {//初始化下拉框动态数据
         apis.msgApi.inforSourceList()
@@ -254,7 +306,6 @@ export default {
       var param = new FormData();
       param.append('file',res.file);
       // console.log(FormData.get('file'))
-      debugger
       apis.msgApi.imgUpload(param)
       .then((data)=>{
         console.log(data)
@@ -319,12 +370,14 @@ export default {
                         this.$router.push({ path: '/infor_list' })
                         this.dialogEdittVisible = false;
                         return;
+                    }else{
+                      this.$message({message: json.msg,type: "error"});
                     }
                 }
-               this.$message({message: '执行失败，请重试',type: "error"});
+               // this.$message({message: '执行失败，请重试',type: "error"});
             })
             .catch((err)=>{
-                this.$message({message: '执行失败，请重试',type: "error"});
+                this.$message({message: json.msg ,type: "error"});
                 console.log(err)
             });
         }else {
@@ -333,7 +386,6 @@ export default {
         }
       });
     },
-
   }
 };
 </script>

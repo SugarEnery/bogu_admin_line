@@ -62,11 +62,14 @@
             </el-table-column>
             <el-table-column prop="images" label="图片" align="center"  min-width="100" >
                <!-- 图片的显示 -->
-               <template slot-scope="scope">
+              <template slot-scope="scope">
                   <img :src="scope.row.images"  min-width="100" />
-               </template>
+              </template>
             </el-table-column>
-            <el-table-column prop="images_detail" label="详情" align="center"  min-width="100" >
+            <el-table-column prop="images_detail" label="详情" align="center"  min-width="100">
+              <template slot-scope="scope">
+                <div v-html='scope.row.images_detail'></div>
+              </template>
             </el-table-column>
             <el-table-column prop="link" label="跳转链接" align="center" min-width="200">
             </el-table-column>
